@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     int diceSize;
     int result;
+    boolean validDice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +34,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Random r = new Random();
                 String editValue = diceSizeEditText.getText().toString();
-                diceSize = Integer.parseInt(editValue);
 
-                // Make sure user input a proper dice size
-                if (diceSize > 0) {
-                    result = r.nextInt(diceSize) + 1;
-                    resultText.setText(String.valueOf(result));
+                //First make sure something has been input by the user
+                if (editValue.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please input a dice size", Toast.LENGTH_SHORT).show();
+                } else if (editValue.length() >= 9) {
+                    Toast.makeText(MainActivity.this, "Surely you don't need a roll that large", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Dice must be larger than zero!", Toast.LENGTH_SHORT).show();
-                }
+                    diceSize = Integer.parseInt(editValue);
+                    // Make sure user input a proper dice size
+                    if (diceSize > 0 && diceSize < 999999999) {
+                        result = r.nextInt(diceSize) + 1;
+                        resultText.setText(String.valueOf(result));
+                    } if (diceSize == 0) {
+                        Toast.makeText(MainActivity.this, "Dice must be larger than zero!", Toast.LENGTH_SHORT).show();
+                    }
 
+                }
             }
         });
     }
